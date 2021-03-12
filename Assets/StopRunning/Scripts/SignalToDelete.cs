@@ -17,15 +17,16 @@ public class SignalToDelete : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
+        
         if (collision.gameObject.tag == "EndOfLevel")
         {
-            Debug.Log("Should Destroy");
+            //Debug.Log("Should Destroy");
             destroySignal = true;
+            //Destroy(this);
         }
     }
-
     public bool GetSignal()
     {
         return destroySignal;

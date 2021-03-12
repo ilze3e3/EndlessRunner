@@ -8,6 +8,7 @@ public class Spawner : MonoBehaviour
     public List<GameObject> preFabList;
 
     public GameObject currLevel;
+    public GameObject tmpLevel;
     public GameObject nextLevel;
 
     public GameObject spawnFlag;
@@ -18,7 +19,9 @@ public class Spawner : MonoBehaviour
 
     private int index;
 
+    [SerializeField]
     private bool spawnOnce = true;
+    [SerializeField]
     private bool destroyOnce = true;
     // Start is called before the first frame update
     void Start()
@@ -34,12 +37,13 @@ public class Spawner : MonoBehaviour
     void Update()
     {
         signalToSpawn = currLevel.GetComponent<LevelMovement>().GetSignalToSpawn();
+        
         signalToDestroy = currLevel.GetComponent<LevelMovement>().GetSignalToDestroy();
 
         if (signalToSpawn && spawnOnce)
         {
             Debug.Log("Spawn Next Level");
-            Instantiate(nextLevel, spawnLocation, new Quaternion());
+            tmpLevel = Instantiate(nextLevel, spawnLocation, new Quaternion());
             signalToSpawn = false;
             spawnOnce = false;
             destroyOnce = true;
@@ -47,9 +51,10 @@ public class Spawner : MonoBehaviour
 
         if (signalToDestroy && destroyOnce)
         {
+            Debug.Log("Destroy Current Level");
             Destroy(currLevel);
 
-            currLevel = nextLevel;
+            currLevel = tmpLevel;
 
             index = (int)Random.Range(0, preFabList.Count);
 
